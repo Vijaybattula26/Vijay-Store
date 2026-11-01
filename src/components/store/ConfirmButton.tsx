@@ -30,7 +30,9 @@ export function ConfirmButton({
 }) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger className={className} aria-label={ariaLabel}>{children}</AlertDialogTrigger>
+      <AlertDialogTrigger className={className} aria-label={ariaLabel}>
+        {children}
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>

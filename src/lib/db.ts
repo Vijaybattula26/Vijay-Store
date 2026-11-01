@@ -4,7 +4,12 @@
  * database without touching the UI.
  */
 import { useSyncExternalStore } from "react";
-import { categories as seedCategories, products as seedProducts, type Category, type Product } from "./products";
+import {
+  categories as seedCategories,
+  products as seedProducts,
+  type Category,
+  type Product,
+} from "./products";
 import {
   DEFAULT_SETTINGS,
   stockDeltaForStatusChange,
@@ -74,7 +79,10 @@ export const settingsDb = createCollection<StoreSettings>("settings", () => DEFA
 export const cartDb = createCollection<CartLine[]>("cart", () => []);
 export const wishlistDb = createCollection<string[]>("wishlist", () => []);
 export const recentDb = createCollection<string[]>("recent", () => []);
-export const customerDb = createCollection<{ name: string; mobile: string; email: string } | null>("customer", () => null);
+export const customerDb = createCollection<{ name: string; mobile: string; email: string } | null>(
+  "customer",
+  () => null,
+);
 
 export const useProducts = productsDb.use;
 export const useCategories = categoriesDb.use;

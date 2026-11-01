@@ -10,7 +10,9 @@ export function AdminTitle({ title, children }: { title: string; children?: Reac
 }
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`rounded-xl border border-border bg-card p-5 ${className}`}>{children}</div>;
+  return (
+    <div className={`rounded-xl border border-border bg-card p-5 ${className}`}>{children}</div>
+  );
 }
 
 export function Stat({ label, value, note }: { label: string; value: ReactNode; note?: string }) {

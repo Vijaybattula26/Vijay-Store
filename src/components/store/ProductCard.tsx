@@ -16,12 +16,19 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-elegant">
-      <Link to="/product/$id" params={{ id: product.id }} className="relative block aspect-square overflow-hidden bg-muted">
+      <Link
+        to="/product/$id"
+        params={{ id: product.id }}
+        className="relative block aspect-square overflow-hidden bg-muted"
+      >
         <img
           src={product.images[0]}
           alt={product.name}
           loading="lazy"
-          className={cn("h-full w-full object-cover transition-transform duration-700 group-hover:scale-110", out && "opacity-60")}
+          className={cn(
+            "h-full w-full object-cover transition-transform duration-700 group-hover:scale-110",
+            out && "opacity-60",
+          )}
         />
         <span className="absolute top-3 left-3 rounded-full bg-background/90 px-2.5 py-1 text-[10px] font-medium tracking-wider text-muted-foreground uppercase">
           {out ? "Out of stock" : product.stock <= 3 ? `Only ${product.stock} left` : "Demo item"}
@@ -31,7 +38,9 @@ export function ProductCard({ product }: { product: Product }) {
         aria-label={wished ? "Remove from wishlist" : "Add to wishlist"}
         onClick={() => {
           toggleWish(product.id);
-          toast(wished ? "Removed from wishlist" : "Saved to wishlist", { description: product.name });
+          toast(wished ? "Removed from wishlist" : "Saved to wishlist", {
+            description: product.name,
+          });
         }}
         className="absolute top-3 right-3 rounded-full bg-background/90 p-2 transition-colors hover:bg-background"
       >
@@ -39,14 +48,22 @@ export function ProductCard({ product }: { product: Product }) {
       </button>
       <div className="flex flex-1 flex-col p-3 sm:p-4">
         <p className="text-[10px] tracking-widest text-gold uppercase sm:text-[11px]">{cat}</p>
-        <Link to="/product/$id" params={{ id: product.id }} className="mt-1 font-display text-base leading-tight hover:text-gold sm:text-lg">
+        <Link
+          to="/product/$id"
+          params={{ id: product.id }}
+          className="mt-1 font-display text-base leading-tight hover:text-gold sm:text-lg"
+        >
           {product.name}
         </Link>
-        <p className="mt-1 line-clamp-2 hidden text-xs text-muted-foreground sm:block">{product.description}</p>
+        <p className="mt-1 line-clamp-2 hidden text-xs text-muted-foreground sm:block">
+          {product.description}
+        </p>
         <div className="mt-auto flex items-center justify-between gap-2 pt-3">
           <div className="flex flex-col leading-tight sm:flex-row sm:items-baseline sm:gap-2">
             <span className="font-semibold">{formatPrice(product.price)}</span>
-            {product.originalPrice && <s className="text-xs text-muted-foreground">{formatPrice(product.originalPrice)}</s>}
+            {product.originalPrice && (
+              <s className="text-xs text-muted-foreground">{formatPrice(product.originalPrice)}</s>
+            )}
           </div>
           {needsChoice ? (
             <Link
