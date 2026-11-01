@@ -13,7 +13,12 @@ export function CategoryTiles() {
           params={{ category: c.id }}
           className="group relative aspect-[4/3] overflow-hidden rounded-xl text-left"
         >
-          <img src={c.image} alt={c.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+          <img
+            src={c.image}
+            alt={c.name}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-overlay/80 via-overlay/20 to-transparent" />
           <div className="absolute bottom-0 p-3 text-overlay-foreground sm:p-4">
             <h3 className="font-display text-lg sm:text-2xl">{c.name}</h3>
@@ -44,4 +49,3 @@ export function WhyUs() {
     </div>
   );
 }
-

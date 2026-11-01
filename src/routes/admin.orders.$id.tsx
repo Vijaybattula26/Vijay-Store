@@ -14,13 +14,25 @@ export const Route = createFileRoute("/admin/orders/$id")({
 function AdminOrder() {
   const { id } = Route.useParams();
   const order = useOrders().find((o) => o.id === id);
-  if (!order) return <p>Order not found. <Link to="/admin/orders" className="text-gold underline">Back</Link></p>;
+  if (!order)
+    return (
+      <p>
+        Order not found.{" "}
+        <Link to="/admin/orders" className="text-gold underline">
+          Back
+        </Link>
+      </p>
+    );
   return (
     <>
-      <Link to="/admin/orders" className="text-sm text-gold underline">← All orders</Link>
+      <Link to="/admin/orders" className="text-sm text-gold underline">
+        ← All orders
+      </Link>
       <AdminTitle title="Order details" />
       <Card className="mb-6 flex flex-wrap items-center gap-3">
-        <label className="text-sm font-medium" htmlFor="status">Update status</label>
+        <label className="text-sm font-medium" htmlFor="status">
+          Update status
+        </label>
         <select
           id="status"
           value={order.status}
@@ -30,7 +42,9 @@ function AdminOrder() {
           }}
           className={`${inputCls} w-56`}
         >
-          {ORDER_STATUSES.map((s) => <option key={s}>{s}</option>)}
+          {ORDER_STATUSES.map((s) => (
+            <option key={s}>{s}</option>
+          ))}
         </select>
         {order.status !== "Cancelled" && (
           <ConfirmButton

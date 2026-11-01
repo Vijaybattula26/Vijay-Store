@@ -44,7 +44,11 @@ export function SiteLayout({ children }: { children: ReactNode }) {
 
       <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4">
-          <button aria-label="Open menu" className="-m-2 p-2 md:hidden" onClick={() => setMenu(true)}>
+          <button
+            aria-label="Open menu"
+            className="-m-2 p-2 md:hidden"
+            onClick={() => setMenu(true)}
+          >
             <Menu className="h-5 w-5" />
           </button>
           <Link to="/" aria-label="THE VIJAY STORE home" className="leading-none">
@@ -67,7 +71,11 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             <IconBtn label="Search" onClick={() => setSearchOpen((s) => !s)}>
               {searchOpen ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
             </IconBtn>
-            <Link to="/account" aria-label="Account" className="hidden p-2 hover:text-gold sm:block">
+            <Link
+              to="/account"
+              aria-label="Account"
+              className="hidden p-2 hover:text-gold sm:block"
+            >
               <User className="h-5 w-5" />
             </Link>
             <Link to="/wishlist" aria-label="Wishlist" className="relative p-2 hover:text-gold">
@@ -108,11 +116,22 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                 {n.label}
               </Link>
             ))}
-            <Link to="/account" className="border-b border-border px-4 py-4">My account</Link>
-            <Link to="/orders" className="border-b border-border px-4 py-4">My orders</Link>
-            <p className="px-4 pt-6 pb-2 text-[11px] tracking-widest text-gold uppercase">Categories</p>
+            <Link to="/account" className="border-b border-border px-4 py-4">
+              My account
+            </Link>
+            <Link to="/orders" className="border-b border-border px-4 py-4">
+              My orders
+            </Link>
+            <p className="px-4 pt-6 pb-2 text-[11px] tracking-widest text-gold uppercase">
+              Categories
+            </p>
             {categories.map((c) => (
-              <Link key={c.id} to="/category/$category" params={{ category: c.id }} className="px-4 py-2.5 text-sm text-muted-foreground">
+              <Link
+                key={c.id}
+                to="/category/$category"
+                params={{ category: c.id }}
+                className="px-4 py-2.5 text-sm text-muted-foreground"
+              >
                 {c.name}
               </Link>
             ))}
@@ -126,14 +145,22 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:grid-cols-2 md:grid-cols-4">
           <div>
             <Logo />
-            <p className="mt-3 text-xs opacity-70">Curated jewellery, fashion and lifestyle. Demo store with demo inventory.</p>
+            <p className="mt-3 text-xs opacity-70">
+              Curated jewellery, fashion and lifestyle. Demo store with demo inventory.
+            </p>
           </div>
           <div>
             <h4 className="mb-3 text-xs tracking-widest text-gold uppercase">Shop</h4>
             <ul className="space-y-2 text-sm opacity-80">
               {categories.map((c) => (
                 <li key={c.id}>
-                  <Link to="/category/$category" params={{ category: c.id }} className="hover:text-gold">{c.name}</Link>
+                  <Link
+                    to="/category/$category"
+                    params={{ category: c.id }}
+                    className="hover:text-gold"
+                  >
+                    {c.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -142,30 +169,63 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             <h4 className="mb-3 text-xs tracking-widest text-gold uppercase">Explore</h4>
             <ul className="space-y-2 text-sm opacity-80">
               {NAV.map((n) => (
-                <li key={n.to}><Link to={n.to} className="hover:text-gold">{n.label}</Link></li>
+                <li key={n.to}>
+                  <Link to={n.to} className="hover:text-gold">
+                    {n.label}
+                  </Link>
+                </li>
               ))}
             </ul>
           </div>
           <div>
             <h4 className="mb-3 text-xs tracking-widest text-gold uppercase">Account</h4>
             <ul className="space-y-2 text-sm opacity-80">
-              <li><Link to="/account" className="hover:text-gold">My account</Link></li>
-              <li><Link to="/orders" className="hover:text-gold">Order history</Link></li>
-              <li><Link to="/wishlist" className="hover:text-gold">Wishlist</Link></li>
-              <li><Link to="/cart" className="hover:text-gold">Cart</Link></li>
-              <li><Link to="/admin" className="hover:text-gold">Store admin</Link></li>
+              <li>
+                <Link to="/account" className="hover:text-gold">
+                  My account
+                </Link>
+              </li>
+              <li>
+                <Link to="/orders" className="hover:text-gold">
+                  Order history
+                </Link>
+              </li>
+              <li>
+                <Link to="/wishlist" className="hover:text-gold">
+                  Wishlist
+                </Link>
+              </li>
+              <li>
+                <Link to="/cart" className="hover:text-gold">
+                  Cart
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin" className="hover:text-gold">
+                  Store admin
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
         <p className="border-t border-primary-foreground/10 px-4 py-4 text-center text-[11px] opacity-60">
-          © {new Date().getFullYear()} THE VIJAY STORE · Demo store — no real orders or payments are processed.
+          © {new Date().getFullYear()} THE VIJAY STORE · Demo store — no real orders or payments are
+          processed.
         </p>
       </footer>
     </div>
   );
 }
 
-function IconBtn({ label, onClick, children }: { label: string; onClick: () => void; children: ReactNode }) {
+function IconBtn({
+  label,
+  onClick,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  children: ReactNode;
+}) {
   return (
     <button aria-label={label} onClick={onClick} className="p-2 hover:text-gold">
       {children}
@@ -181,7 +241,15 @@ function Badge({ n }: { n: number }) {
   );
 }
 
-export function PageHeader({ eyebrow, title, children }: { eyebrow?: string; title: string; children?: ReactNode }) {
+export function PageHeader({
+  eyebrow,
+  title,
+  children,
+}: {
+  eyebrow?: string;
+  title: string;
+  children?: ReactNode;
+}) {
   return (
     <div className="border-b border-border bg-secondary/50">
       <div className="mx-auto max-w-7xl px-4 py-10 md:py-14">
@@ -193,10 +261,22 @@ export function PageHeader({ eyebrow, title, children }: { eyebrow?: string; tit
   );
 }
 
-export function EmptyState({ icon, title, text, action }: { icon: ReactNode; title: string; text: string; action?: ReactNode }) {
+export function EmptyState({
+  icon,
+  title,
+  text,
+  action,
+}: {
+  icon: ReactNode;
+  title: string;
+  text: string;
+  action?: ReactNode;
+}) {
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center">
-      <div className="flex h-24 w-24 items-center justify-center rounded-full bg-secondary text-gold">{icon}</div>
+      <div className="flex h-24 w-24 items-center justify-center rounded-full bg-secondary text-gold">
+        {icon}
+      </div>
       <p className="mt-5 font-display text-2xl">{title}</p>
       <p className="mt-1 max-w-sm text-sm text-muted-foreground">{text}</p>
       {action && <div className="mt-6">{action}</div>}

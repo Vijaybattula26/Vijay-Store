@@ -4,7 +4,11 @@ import { CategoryTiles } from "@/components/store/Sections";
 import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/categories")({
-  head: () => seo("Categories", "Jewellery, clothing, watches, home & lifestyle, accessories and beauty — explore every category."),
+  head: () =>
+    seo(
+      "Categories",
+      "Jewellery, clothing, watches, home & lifestyle, accessories and beauty — explore every category.",
+    ),
   component: () => (
     <SiteLayout>
       <PageHeader eyebrow="Explore" title="All categories" />

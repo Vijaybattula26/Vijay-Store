@@ -21,23 +21,53 @@ function Dashboard() {
   return (
     <>
       <AdminTitle title="Dashboard overview" />
-      <p className="-mt-4 mb-6 text-sm text-muted-foreground">All figures are calculated from demo data stored in this browser.</p>
+      <p className="-mt-4 mb-6 text-sm text-muted-foreground">
+        All figures are calculated from demo data stored in this browser.
+      </p>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat label="Products" value={products.length} note={`${products.filter((p) => p.active).length} visible in store`} />
-        <Stat label="Demo orders" value={orders.length} note={`${orders.length - live.length} cancelled`} />
-        <Stat label="Demo order value" value={formatPrice(revenue)} note="Excludes cancelled · not real revenue" />
+        <Stat
+          label="Products"
+          value={products.length}
+          note={`${products.filter((p) => p.active).length} visible in store`}
+        />
+        <Stat
+          label="Demo orders"
+          value={orders.length}
+          note={`${orders.length - live.length} cancelled`}
+        />
+        <Stat
+          label="Demo order value"
+          value={formatPrice(revenue)}
+          note="Excludes cancelled · not real revenue"
+        />
         <Stat label="Customers" value={customers} note="Unique emails on orders" />
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <Card>
-          <div className="mb-3 flex justify-between"><h2 className="font-display text-xl">Recent orders</h2><Link to="/admin/orders" className="text-xs text-gold underline">View all</Link></div>
-          {orders.length === 0 ? <p className="text-sm text-muted-foreground">No demo orders yet.</p> : (
+          <div className="mb-3 flex justify-between">
+            <h2 className="font-display text-xl">Recent orders</h2>
+            <Link to="/admin/orders" className="text-xs text-gold underline">
+              View all
+            </Link>
+          </div>
+          {orders.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No demo orders yet.</p>
+          ) : (
             <ul className="divide-y divide-border">
               {orders.slice(0, 5).map((o) => (
                 <li key={o.id}>
-                  <Link to="/admin/orders/$id" params={{ id: o.id }} className="flex items-center gap-3 py-2.5 text-sm hover:text-gold">
-                    <span className="flex-1"><span className="block font-mono text-xs">{o.id}</span><span className="text-xs text-muted-foreground">{o.customer.name} · {fmtDate(o.createdAt)}</span></span>
+                  <Link
+                    to="/admin/orders/$id"
+                    params={{ id: o.id }}
+                    className="flex items-center gap-3 py-2.5 text-sm hover:text-gold"
+                  >
+                    <span className="flex-1">
+                      <span className="block font-mono text-xs">{o.id}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {o.customer.name} · {fmtDate(o.createdAt)}
+                      </span>
+                    </span>
                     <StatusBadge status={o.status} />
                     <span className="w-20 text-right font-medium">{formatPrice(o.total)}</span>
                   </Link>
@@ -47,13 +77,24 @@ function Dashboard() {
           )}
         </Card>
         <Card>
-          <div className="mb-3 flex justify-between"><h2 className="font-display text-xl">Stock alerts</h2><Link to="/admin/inventory" className="text-xs text-gold underline">Inventory</Link></div>
-          {low.length + out.length === 0 ? <p className="text-sm text-muted-foreground">All products are well stocked.</p> : (
+          <div className="mb-3 flex justify-between">
+            <h2 className="font-display text-xl">Stock alerts</h2>
+            <Link to="/admin/inventory" className="text-xs text-gold underline">
+              Inventory
+            </Link>
+          </div>
+          {low.length + out.length === 0 ? (
+            <p className="text-sm text-muted-foreground">All products are well stocked.</p>
+          ) : (
             <ul className="space-y-2 text-sm">
               {[...out, ...low].map((p) => (
                 <li key={p.id} className="flex justify-between">
-                  <Link to="/admin/products/$id" params={{ id: p.id }} className="hover:text-gold">{p.name}</Link>
-                  <span className={p.stock === 0 ? "text-destructive" : "text-gold"}>{p.stock === 0 ? "Out of stock" : `${p.stock} left`}</span>
+                  <Link to="/admin/products/$id" params={{ id: p.id }} className="hover:text-gold">
+                    {p.name}
+                  </Link>
+                  <span className={p.stock === 0 ? "text-destructive" : "text-gold"}>
+                    {p.stock === 0 ? "Out of stock" : `${p.stock} left`}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -64,7 +105,9 @@ function Dashboard() {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
             {ORDER_STATUSES.map((s) => (
               <div key={s} className="rounded-lg bg-secondary p-3 text-center">
-                <p className="text-2xl font-semibold">{orders.filter((o) => o.status === s).length}</p>
+                <p className="text-2xl font-semibold">
+                  {orders.filter((o) => o.status === s).length}
+                </p>
                 <p className="text-xs text-muted-foreground">{s}</p>
               </div>
             ))}

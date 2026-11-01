@@ -28,7 +28,8 @@ const SORTS: [SortKey, string][] = [
 ];
 
 export function parseCatalogueSearch(s: Record<string, unknown>): CatalogueSearch {
-  const num = (v: unknown) => (v === undefined || v === "" || isNaN(Number(v)) ? undefined : Number(v));
+  const num = (v: unknown) =>
+    v === undefined || v === "" || isNaN(Number(v)) ? undefined : Number(v);
   const str = (v: unknown) => (typeof v === "string" && v ? v : undefined);
   const sort = str(s["sort"]);
   return {
@@ -44,7 +45,13 @@ export function parseCatalogueSearch(s: Record<string, unknown>): CatalogueSearc
 }
 
 /** Search + filter + sort UI. `fixedCategory` locks the category (category pages). */
-export function Catalogue({ search, fixedCategory }: { search: CatalogueSearch; fixedCategory?: CategoryId }) {
+export function Catalogue({
+  search,
+  fixedCategory,
+}: {
+  search: CatalogueSearch;
+  fixedCategory?: CategoryId;
+}) {
   const navigate = useNavigate();
   const products = useProducts();
   const categories = useCategories();
@@ -53,7 +60,11 @@ export function Catalogue({ search, fixedCategory }: { search: CatalogueSearch; 
   const category = fixedCategory ?? search.cat;
 
   const update = (patch: Partial<CatalogueSearch>) =>
-    void navigate({ to: ".", search: (prev: CatalogueSearch) => ({ ...prev, ...patch }), replace: true });
+    void navigate({
+      to: ".",
+      search: (prev: CatalogueSearch) => ({ ...prev, ...patch }),
+      replace: true,
+    });
 
   const pool = products.filter((p) => p.active && (!category || p.category === category));
   const sizes = [...new Set(pool.flatMap((p) => p.sizes))];
@@ -69,7 +80,15 @@ export function Catalogue({ search, fixedCategory }: { search: CatalogueSearch; 
     [products, categories, search, category],
   );
 
-  const active = !!(search.q || search.min != null || search.max != null || search.stock || search.size || search.color || (!fixedCategory && search.cat));
+  const active = !!(
+    search.q ||
+    search.min != null ||
+    search.max != null ||
+    search.stock ||
+    search.size ||
+    search.color ||
+    (!fixedCategory && search.cat)
+  );
   const clear = () => {
     setQ("");
     void navigate({ to: ".", search: {}, replace: true });
@@ -98,39 +117,95 @@ export function Catalogue({ search, fixedCategory }: { search: CatalogueSearch; 
           />
         </form>
         <div className="flex gap-2">
-          <select value={search.sort ?? "featured"} onChange={(e) => update({ sort: e.target.value as SortKey })} aria-label="Sort products" className={cn(inputCls, "md:w-56")}>
+          <select
+            value={search.sort ?? "featured"}
+            onChange={(e) => update({ sort: e.target.value as SortKey })}
+            aria-label="Sort products"
+            className={cn(inputCls, "md:w-56")}
+          >
             {SORTS.map(([k, l]) => (
-              <option key={k} value={k}>{l}</option>
+              <option key={k} value={k}>
+                {l}
+              </option>
             ))}
           </select>
-          <button onClick={() => setShowFilters((s) => !s)} className="inline-flex items-center gap-2 rounded-lg border border-input px-4 text-sm md:hidden" aria-expanded={showFilters}>
+          <button
+            onClick={() => setShowFilters((s) => !s)}
+            className="inline-flex items-center gap-2 rounded-lg border border-input px-4 text-sm md:hidden"
+            aria-expanded={showFilters}
+          >
             <SlidersHorizontal className="h-4 w-4" /> Filters
           </button>
         </div>
       </div>
 
       <div className="grid gap-8 md:grid-cols-[230px_1fr]">
-        <aside className={cn("space-y-6 rounded-xl border border-border bg-card p-4 md:block md:self-start", showFilters ? "block" : "hidden")}>
+        <aside
+          className={cn(
+            "space-y-6 rounded-xl border border-border bg-card p-4 md:block md:self-start",
+            showFilters ? "block" : "hidden",
+          )}
+        >
           {!fixedCategory && (
             <FilterGroup title="Category">
-              <select value={search.cat ?? ""} onChange={(e) => update({ cat: (e.target.value || undefined) as CategoryId | undefined, size: undefined, color: undefined })} aria-label="Category" className={inputCls}>
+              <select
+                value={search.cat ?? ""}
+                onChange={(e) =>
+                  update({
+                    cat: (e.target.value || undefined) as CategoryId | undefined,
+                    size: undefined,
+                    color: undefined,
+                  })
+                }
+                aria-label="Category"
+                className={inputCls}
+              >
                 <option value="">All categories</option>
                 {categories.map((c) => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
                 ))}
               </select>
             </FilterGroup>
           )}
           <FilterGroup title="Price (₹)">
             <div className="flex items-center gap-2">
-              <input type="number" min={0} inputMode="numeric" placeholder="Min" aria-label="Minimum price" value={search.min ?? ""} onChange={(e) => update({ min: e.target.value === "" ? undefined : Number(e.target.value) })} className={inputCls} />
+              <input
+                type="number"
+                min={0}
+                inputMode="numeric"
+                placeholder="Min"
+                aria-label="Minimum price"
+                value={search.min ?? ""}
+                onChange={(e) =>
+                  update({ min: e.target.value === "" ? undefined : Number(e.target.value) })
+                }
+                className={inputCls}
+              />
               <span className="text-muted-foreground">–</span>
-              <input type="number" min={0} inputMode="numeric" placeholder="Max" aria-label="Maximum price" value={search.max ?? ""} onChange={(e) => update({ max: e.target.value === "" ? undefined : Number(e.target.value) })} className={inputCls} />
+              <input
+                type="number"
+                min={0}
+                inputMode="numeric"
+                placeholder="Max"
+                aria-label="Maximum price"
+                value={search.max ?? ""}
+                onChange={(e) =>
+                  update({ max: e.target.value === "" ? undefined : Number(e.target.value) })
+                }
+                className={inputCls}
+              />
             </div>
           </FilterGroup>
           <FilterGroup title="Availability">
             <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox" checked={!!search.stock} onChange={(e) => update({ stock: e.target.checked || undefined })} className="h-4 w-4 accent-primary" />
+              <input
+                type="checkbox"
+                checked={!!search.stock}
+                onChange={(e) => update({ stock: e.target.checked || undefined })}
+                className="h-4 w-4 accent-primary"
+              />
               In stock only
             </label>
           </FilterGroup>
@@ -141,11 +216,20 @@ export function Catalogue({ search, fixedCategory }: { search: CatalogueSearch; 
           )}
           {colors.length > 0 && (
             <FilterGroup title="Colour">
-              <Chips options={colors} value={search.color} onChange={(color) => update({ color })} />
+              <Chips
+                options={colors}
+                value={search.color}
+                onChange={(color) => update({ color })}
+              />
             </FilterGroup>
           )}
           {active && (
-            <button onClick={clear} className="w-full rounded-lg border border-border py-2 text-sm hover:border-gold hover:text-gold">Clear filters</button>
+            <button
+              onClick={clear}
+              className="w-full rounded-lg border border-border py-2 text-sm hover:border-gold hover:text-gold"
+            >
+              Clear filters
+            </button>
           )}
         </aside>
 
@@ -158,7 +242,11 @@ export function Catalogue({ search, fixedCategory }: { search: CatalogueSearch; 
               icon={<PackageSearch className="h-10 w-10" />}
               title="No results found"
               text="Try a different search term or loosen your filters."
-              action={<button onClick={clear} className="text-sm text-gold underline">Clear filters</button>}
+              action={
+                <button onClick={clear} className="text-sm text-gold underline">
+                  Clear filters
+                </button>
+              }
             />
           ) : (
             <ProductGrid items={results} />
@@ -178,11 +266,29 @@ function FilterGroup({ title, children }: { title: string; children: React.React
   );
 }
 
-function Chips({ options, value, onChange }: { options: string[]; value: string | undefined; onChange: (v: string | undefined) => void }) {
+function Chips({
+  options,
+  value,
+  onChange,
+}: {
+  options: string[];
+  value: string | undefined;
+  onChange: (v: string | undefined) => void;
+}) {
   return (
     <div className="flex flex-wrap gap-2">
       {options.map((o) => (
-        <button key={o} onClick={() => onChange(value === o ? undefined : o)} aria-pressed={value === o} className={cn("rounded-full border px-3 py-1 text-xs", value === o ? "border-primary bg-primary text-primary-foreground" : "border-border hover:border-gold")}>
+        <button
+          key={o}
+          onClick={() => onChange(value === o ? undefined : o)}
+          aria-pressed={value === o}
+          className={cn(
+            "rounded-full border px-3 py-1 text-xs",
+            value === o
+              ? "border-primary bg-primary text-primary-foreground"
+              : "border-border hover:border-gold",
+          )}
+        >
           {o}
         </button>
       ))}

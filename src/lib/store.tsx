@@ -11,7 +11,10 @@ export function useStore() {
 
   const lines = cart
     .map((l) => ({ line: l, key: lineKey(l), product: findProduct(products, l.productId) }))
-    .filter((x): x is { line: CartLine; key: string; product: NonNullable<typeof x.product> } => !!x.product);
+    .filter(
+      (x): x is { line: CartLine; key: string; product: NonNullable<typeof x.product> } =>
+        !!x.product,
+    );
 
   return {
     cart,
@@ -35,7 +38,8 @@ export function useStore() {
     },
     remove: (key: string) => cartDb.set((c) => c.filter((l) => lineKey(l) !== key)),
     clearCart: () => cartDb.set(() => []),
-    toggleWish: (id: string) => wishlistDb.set((w) => (w.includes(id) ? w.filter((x) => x !== id) : [...w, id])),
+    toggleWish: (id: string) =>
+      wishlistDb.set((w) => (w.includes(id) ? w.filter((x) => x !== id) : [...w, id])),
     viewed: (id: string) => recentDb.set((r) => [id, ...r.filter((x) => x !== id)].slice(0, 8)),
   };
 }

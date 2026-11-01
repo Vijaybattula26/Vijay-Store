@@ -38,17 +38,29 @@ export function qtyInCart(cart: CartLine[], productId: string) {
 export type AddResult = { ok: true; cart: CartLine[] } | { ok: false; reason: string };
 
 /** Adds a line, merging identical variants and enforcing stock. */
-export function addToCart(cart: CartLine[], line: CartLine, product: Pick<Product, "stock" | "active">): AddResult {
-  if (!product.active || product.stock <= 0) return { ok: false, reason: "This item is out of stock" };
+export function addToCart(
+  cart: CartLine[],
+  line: CartLine,
+  product: Pick<Product, "stock" | "active">,
+): AddResult {
+  if (!product.active || product.stock <= 0)
+    return { ok: false, reason: "This item is out of stock" };
   if (line.qty < 1) return { ok: false, reason: "Choose a quantity" };
   const already = qtyInCart(cart, line.productId);
   if (already + line.qty > product.stock)
-    return { ok: false, reason: `Only ${product.stock} in stock${already ? ` (${already} already in cart)` : ""}` };
+    return {
+      ok: false,
+      reason: `Only ${product.stock} in stock${already ? ` (${already} already in cart)` : ""}`,
+    };
   const key = lineKey(line);
   const existing = cart.find((l) => lineKey(l) === key);
   if (existing) {
-    if (existing.qty + line.qty > MAX_PER_LINE) return { ok: false, reason: `Maximum ${MAX_PER_LINE} per item` };
-    return { ok: true, cart: cart.map((l) => (lineKey(l) === key ? { ...l, qty: l.qty + line.qty } : l)) };
+    if (existing.qty + line.qty > MAX_PER_LINE)
+      return { ok: false, reason: `Maximum ${MAX_PER_LINE} per item` };
+    return {
+      ok: true,
+      cart: cart.map((l) => (lineKey(l) === key ? { ...l, qty: l.qty + line.qty } : l)),
+    };
   }
   return { ok: true, cart: [...cart, line] };
 }
@@ -65,7 +77,11 @@ export function setLineQty(cart: CartLine[], key: string, qty: number, stock: nu
   return cart.map((l) => (lineKey(l) === key ? { ...l, qty: n } : l));
 }
 
-export function deliveryFee(subtotal: number, option: DeliveryOption, s: StoreSettings = DEFAULT_SETTINGS) {
+export function deliveryFee(
+  subtotal: number,
+  option: DeliveryOption,
+  s: StoreSettings = DEFAULT_SETTINGS,
+) {
   if (subtotal <= 0) return 0;
   if (option === "express") return s.expressFee;
   return subtotal >= s.freeDeliveryThreshold ? 0 : s.standardFee;
@@ -84,7 +100,8 @@ export function totals(
 
 /* ---------------- validation ---------------- */
 
-export const isIndianMobile = (v: string) => /^[6-9]\d{9}$/.test(v.replace(/[\s-]/g, "").replace(/^(\+91|0)/, ""));
+export const isIndianMobile = (v: string) =>
+  /^[6-9]\d{9}$/.test(v.replace(/[\s-]/g, "").replace(/^(\+91|0)/, ""));
 export const isIndianPin = (v: string) => /^[1-9]\d{5}$/.test(v.trim());
 export const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
 
@@ -128,7 +145,11 @@ export interface ProductFilter {
   sort?: SortKey | undefined;
 }
 
-export function filterProducts(list: Product[], f: ProductFilter, categoryName: (id: CategoryId) => string = (id) => id) {
+export function filterProducts(
+  list: Product[],
+  f: ProductFilter,
+  categoryName: (id: CategoryId) => string = (id) => id,
+) {
   const term = (f.q ?? "").trim().toLowerCase();
   const out = list.filter(
     (p) =>
@@ -160,7 +181,14 @@ export function filterProducts(list: Product[], f: ProductFilter, categoryName: 
 
 /* ---------------- orders ---------------- */
 
-export const ORDER_STATUSES = ["Pending", "Confirmed (demo)", "Processing", "Shipped", "Delivered", "Cancelled"] as const;
+export const ORDER_STATUSES = [
+  "Pending",
+  "Confirmed (demo)",
+  "Processing",
+  "Shipped",
+  "Delivered",
+  "Cancelled",
+] as const;
 export type OrderStatus = (typeof ORDER_STATUSES)[number];
 
 export interface OrderItem {
@@ -177,7 +205,14 @@ export interface Order {
   id: string;
   createdAt: string;
   customer: { name: string; mobile: string; email: string };
-  address: { house: string; street: string; landmark: string; city: string; state: string; pin: string };
+  address: {
+    house: string;
+    street: string;
+    landmark: string;
+    city: string;
+    state: string;
+    pin: string;
+  };
   delivery: DeliveryOption;
   payment: "cod-demo";
   items: OrderItem[];
@@ -206,9 +241,40 @@ export function stockDeltaForStatusChange(from: OrderStatus, to: OrderStatus) {
 }
 
 export const INDIAN_STATES = [
-  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana",
-  "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
-  "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana",
-  "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh",
-  "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry",
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
+  "Andaman and Nicobar Islands",
+  "Chandigarh",
+  "Dadra and Nagar Haveli and Daman and Diu",
+  "Delhi",
+  "Jammu and Kashmir",
+  "Ladakh",
+  "Lakshadweep",
+  "Puducherry",
 ];

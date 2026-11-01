@@ -15,15 +15,21 @@ function OrderPage() {
   const hydrated = useHydrated();
   const orders = useOrders();
   const me = hydrated ? customerDb.get() : null;
-  const order = orders.find((o) => o.id === id && me && (o.customer.email === me.email || o.customer.mobile === me.mobile));
+  const order = orders.find(
+    (o) => o.id === id && me && (o.customer.email === me.email || o.customer.mobile === me.mobile),
+  );
   return (
     <SiteLayout>
       <div className="mx-auto max-w-4xl px-4 py-10">
-        <Link to="/orders" className="text-sm text-gold underline underline-offset-4">← All orders</Link>
+        <Link to="/orders" className="text-sm text-gold underline underline-offset-4">
+          ← All orders
+        </Link>
         {!hydrated ? null : !order ? (
           <div className="py-16 text-center">
             <h1 className="font-display text-3xl">Order not found</h1>
-            <Link to="/orders" className={`${btnPrimary} mt-6`}>Back to orders</Link>
+            <Link to="/orders" className={`${btnPrimary} mt-6`}>
+              Back to orders
+            </Link>
           </div>
         ) : (
           <div className="mt-6 space-y-6">
