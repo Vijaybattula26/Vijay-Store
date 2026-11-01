@@ -145,12 +145,3 @@ export const products: Product[] = seeds.map(([id, name, price, description, cat
 
 export const formatPrice = (n: number) => `₹${n.toLocaleString("en-IN")}`;
 
-
-export const FREE_SHIPPING_THRESHOLD = 1999;
-export const SHIPPING_FEE = 99;
-
-export function cartTotals(lines: { price: number; qty: number }[]) {
-  const subtotal = lines.reduce((s, l) => s + l.price * l.qty, 0);
-  const shipping = subtotal === 0 || subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
-  return { subtotal, shipping, total: subtotal + shipping };
-}
