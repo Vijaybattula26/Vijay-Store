@@ -24,6 +24,15 @@ export interface Product {
   popularity: number;
   tags: ("featured" | "bestseller" | "new")[];
   collection?: "festive" | "everyday" | "gifting" | undefined;
+  sku: string;
+  stock: number;
+  originalPrice?: number | undefined;
+  sizes: string[];
+  colors: string[];
+  active: boolean;
+  featured: boolean;
+  /** Higher = newer. Used for "Newest first". */
+  createdAt: number;
 }
 
 const img = (id: string, w = 800) =>
@@ -91,6 +100,28 @@ const seeds: Seed[] = [
   ["1620916566398-39f1143ab7be", "Vitamin C Face Wash", 499, "Gentle foaming cleanser for daily use.", "beauty", 88, ["bestseller"], "everyday"],
 ];
 
+const SIZES: Partial<Record<CategoryId, string[]>> = {
+  clothing: ["XS", "S", "M", "L", "XL"],
+};
+const RING_SIZES = ["6", "7", "8", "9"];
+const COLORS: Record<CategoryId, string[]> = {
+  jewellery: ["Gold", "Silver", "Rose Gold"],
+  clothing: ["Black", "White", "Beige"],
+  watches: ["Black", "Silver", "Brown"],
+  home: [],
+  accessories: ["Black", "Tan", "Beige"],
+  beauty: [],
+};
+const PREFIX: Record<CategoryId, string> = {
+  jewellery: "JWL",
+  clothing: "CLO",
+  watches: "WAT",
+  home: "HOM",
+  accessories: "ACC",
+  beauty: "BEA",
+};
+
+/** The 36 original demo products, enriched with demo stock/SKU/variant data. */
 export const products: Product[] = seeds.map(([id, name, price, description, category, popularity, tags, collection], i) => ({
   id: `p${i + 1}`,
   name,
@@ -101,11 +132,19 @@ export const products: Product[] = seeds.map(([id, name, price, description, cat
   popularity,
   tags,
   collection,
+  sku: `${PREFIX[category]}-${String(i + 1).padStart(3, "0")}`,
+  // Deterministic demo stock; a few items are low or out of stock to exercise the UI.
+  stock: i % 11 === 5 ? 0 : i % 7 === 3 ? 3 : 10 + ((i * 7) % 25),
+  originalPrice: i % 4 === 0 ? Math.round((price * 1.25) / 100) * 100 - 1 : undefined,
+  sizes: name.includes("Ring") ? RING_SIZES : (SIZES[category] ?? []),
+  colors: COLORS[category],
+  active: true,
+  featured: tags.includes("featured"),
+  createdAt: tags.includes("new") ? 1000 + i : i,
 }));
 
 export const formatPrice = (n: number) => `₹${n.toLocaleString("en-IN")}`;
 
-export const getProduct = (id: string) => products.find((p) => p.id === id);
 
 export const FREE_SHIPPING_THRESHOLD = 1999;
 export const SHIPPING_FEE = 99;
