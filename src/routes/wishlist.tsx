@@ -46,7 +46,7 @@ function WishlistPage() {
                           className="font-medium text-gold disabled:opacity-40"
                           onClick={() => {
                             const err = add({ productId: p.id, qty: 1 });
-                            if (err) return toast.error(err);
+                            if (err) { toast.error(err); return; }
                             toggleWish(p.id);
                             toast.success("Moved to cart", { description: p.name });
                           }}

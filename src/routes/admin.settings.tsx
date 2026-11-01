@@ -26,7 +26,7 @@ function SettingsPage() {
               const fd = new FormData(e.currentTarget);
               const n = (k: string) => Number(fd.get(k));
               const next = { freeDeliveryThreshold: n("free"), standardFee: n("std"), expressFee: n("exp") };
-              if (Object.values(next).some((v) => !Number.isFinite(v) || v < 0)) return toast.error("Enter amounts of 0 or more");
+              if (Object.values(next).some((v) => !Number.isFinite(v) || v < 0)) { toast.error("Enter amounts of 0 or more"); return; }
               settingsDb.set(() => next);
               toast.success("Settings saved");
             }}

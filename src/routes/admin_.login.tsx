@@ -28,8 +28,8 @@ function AdminLogin() {
     e.preventDefault();
     if (busy) return;
     if (setup) {
-      if (code.length < 6) return toast.error("Use at least 6 characters");
-      if (code !== confirm) return toast.error("Passcodes don't match");
+      if (code.length < 6) { toast.error("Use at least 6 characters"); return; }
+      if (code !== confirm) { toast.error("Passcodes don't match"); return; }
       setBusy(true);
       await adminAuth.create(code);
       toast.success("Demo admin passcode created");
@@ -39,7 +39,7 @@ function AdminLogin() {
     setBusy(true);
     const ok = await adminAuth.signIn(code);
     setBusy(false);
-    if (!ok) return toast.error("Incorrect passcode");
+    if (!ok) { toast.error("Incorrect passcode"); return; }
     void navigate({ to: "/admin" });
   };
 

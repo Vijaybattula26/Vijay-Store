@@ -15,7 +15,7 @@ function Inventory() {
   const [filter, setFilter] = useState<"all" | "low" | "out">("all");
   const list = products.filter((p) => (filter === "out" ? p.stock === 0 : filter === "low" ? p.stock > 0 && p.stock <= 3 : true));
   const setStock = (id: string, stock: number) => {
-    if (!Number.isInteger(stock) || stock < 0) return toast.error("Stock must be 0 or more");
+    if (!Number.isInteger(stock) || stock < 0) { toast.error("Stock must be 0 or more"); return; }
     productsDb.set((ps) => ps.map((p) => (p.id === id ? { ...p, stock } : p)));
   };
   return (

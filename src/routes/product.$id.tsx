@@ -61,10 +61,10 @@ function ProductPage() {
   const related = products.filter((x) => x.active && x.category === p.category && x.id !== p.id).slice(0, 4);
 
   const add = (buyNow: boolean) => {
-    if (p.sizes.length && !size) return toast.error("Please select a size");
-    if (p.colors.length && !color) return toast.error("Please select a colour");
+    if (p.sizes.length && !size) { toast.error("Please select a size"); return; }
+    if (p.colors.length && !color) { toast.error("Please select a colour"); return; }
     const err = store.add({ productId: p.id, qty, size, color });
-    if (err) return toast.error(err);
+    if (err) { toast.error(err); return; }
     if (buyNow) void navigate({ to: "/checkout" });
     else toast.success("Added to cart", { description: `${p.name} × ${qty}`, action: { label: "View cart", onClick: () => void navigate({ to: "/cart" }) } });
     setQty(1);

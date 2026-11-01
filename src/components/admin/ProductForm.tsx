@@ -36,13 +36,13 @@ export function ProductForm({ product }: { product?: Product }) {
     const price = Number(f.price);
     const stock = Number(f.stock);
     const orig = f.originalPrice ? Number(f.originalPrice) : undefined;
-    if (f.name.trim().length < 2) return toast.error("Enter a product name");
-    if (!(price > 0)) return toast.error("Enter a valid selling price");
-    if (!Number.isInteger(stock) || stock < 0) return toast.error("Stock must be a whole number, 0 or more");
-    if (orig !== undefined && !(orig > price)) return toast.error("Original price must be higher than selling price");
-    if (images.length === 0) return toast.error("Add at least one image");
+    if (f.name.trim().length < 2) { toast.error("Enter a product name"); return; }
+    if (!(price > 0)) { toast.error("Enter a valid selling price"); return; }
+    if (!Number.isInteger(stock) || stock < 0) { toast.error("Stock must be a whole number, 0 or more"); return; }
+    if (orig !== undefined && !(orig > price)) { toast.error("Original price must be higher than selling price"); return; }
+    if (images.length === 0) { toast.error("Add at least one image"); return; }
     const sku = f.sku.trim() || `${f.category.slice(0, 3).toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
-    if (productsDb.get().some((p) => p.sku === sku && p.id !== product?.id)) return toast.error("SKU already used by another product");
+    if (productsDb.get().some((p) => p.sku === sku && p.id !== product?.id)) { toast.error("SKU already used by another product"); return; }
 
     const data: Product = {
       id: product?.id ?? `p${Date.now().toString(36)}`,

@@ -26,7 +26,7 @@ function Categories() {
                 const fd = new FormData(e.currentTarget);
                 const name = String(fd.get("name") ?? "").trim();
                 const image = String(fd.get("image") ?? "").trim();
-                if (name.length < 2) return toast.error("Enter a name");
+                if (name.length < 2) { toast.error("Enter a name"); return; }
                 categoriesDb.set((cs) => cs.map((x) => (x.id === c.id ? { ...x, name, blurb: String(fd.get("blurb") ?? ""), image: image || x.image } : x)));
                 toast.success("Category saved");
               }}
