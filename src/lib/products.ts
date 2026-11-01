@@ -23,7 +23,7 @@ export interface Product {
   /** Demo ranking only, used for "popularity" sorting. Not real sales data. */
   popularity: number;
   tags: ("featured" | "bestseller" | "new")[];
-  collection?: "festive" | "everyday" | "gifting";
+  collection?: "festive" | "everyday" | "gifting" | undefined;
 }
 
 const img = (id: string, w = 800) =>

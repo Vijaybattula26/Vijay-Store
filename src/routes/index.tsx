@@ -152,10 +152,10 @@ function StorePage() {
               </div>
             </div>
             <div className="relative grid grid-cols-2 gap-4">
-              <img src={categories[0].image} alt="Jewellery" className="aspect-[3/4] w-full rounded-2xl object-cover shadow-elegant" />
+              <img src={categories[0]!.image} alt="Jewellery" className="aspect-[3/4] w-full rounded-2xl object-cover shadow-elegant" />
               <div className="mt-10 space-y-4">
-                <img src={categories[2].image} alt="Watch" className="aspect-square w-full rounded-2xl object-cover shadow-elegant" />
-                <img src={categories[4].image} alt="Handbag" className="aspect-square w-full rounded-2xl object-cover shadow-elegant" />
+                <img src={categories[2]!.image} alt="Watch" className="aspect-square w-full rounded-2xl object-cover shadow-elegant" />
+                <img src={categories[4]!.image} alt="Handbag" className="aspect-square w-full rounded-2xl object-cover shadow-elegant" />
               </div>
             </div>
           </div>
@@ -224,7 +224,7 @@ function StorePage() {
         {/* Promo */}
         <section className="mx-auto max-w-7xl px-4 py-8">
           <div className="relative overflow-hidden rounded-2xl bg-primary text-primary-foreground">
-            <img src={categories[3].image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />
+            <img src={categories[3]!.image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />
             <div className="relative px-6 py-16 text-center md:py-24">
               <p className="text-xs tracking-[0.3em] text-gold uppercase">Limited edit</p>
               <h2 className="mt-3 font-display text-4xl md:text-5xl">The Festive Collection</h2>
@@ -376,7 +376,7 @@ function Newsletter() {
           noValidate
           onSubmit={(e) => {
             e.preventDefault();
-            if (!/^\S+@\S+\.\S+$/.test(email)) return toast.error("Please enter a valid email");
+            if (!/^\S+@\S+\.\S+$/.test(email)) { toast.error("Please enter a valid email"); return; }
             toast.success("Thanks for subscribing (demo)");
             setEmail("");
           }}
@@ -397,7 +397,7 @@ function ContactForm() {
       noValidate
       onSubmit={(e) => {
         e.preventDefault();
-        if (!f.name.trim() || !/^\S+@\S+\.\S+$/.test(f.email) || f.msg.trim().length < 5) return toast.error("Please fill in all fields correctly");
+        if (!f.name.trim() || !/^\S+@\S+\.\S+$/.test(f.email) || f.msg.trim().length < 5) { toast.error("Please fill in all fields correctly"); return; }
         toast.success("Message noted (demo)", { description: "Messages aren't sent anywhere yet." });
         setF({ name: "", email: "", msg: "" });
       }}

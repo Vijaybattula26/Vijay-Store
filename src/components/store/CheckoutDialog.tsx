@@ -134,7 +134,7 @@ export function CheckoutDialog({ open, onOpenChange }: { open: boolean; onOpenCh
   );
 }
 
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+function Field({ label, error, children }: { label: string; error?: string | undefined; children: React.ReactNode }) {
   return (
     <label className="block">
       <span className="mb-1 block text-xs font-medium">{label}</span>
