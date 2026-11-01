@@ -18,7 +18,9 @@ describe("catalogue", () => {
     expect(new Set(products.map((p) => p.sku)).size).toBe(36);
   });
   it("search matches name, description and category", () => {
-    expect(filterProducts(products, { q: "pearl" }).map((p) => p.name)).toContain("Pearl Drop Earrings");
+    expect(filterProducts(products, { q: "pearl" }).map((p) => p.name)).toContain(
+      "Pearl Drop Earrings",
+    );
     expect(filterProducts(products, { q: "watches" }).length).toBeGreaterThanOrEqual(6);
   });
   it("filters by price range and sorts low to high", () => {
@@ -40,11 +42,19 @@ describe("cart", () => {
     expect(r.ok && r.cart).toEqual([{ productId: "p1", qty: 3, size: "M" }]);
   });
   it("keeps different sizes as separate lines", () => {
-    const r = addToCart([{ productId: "p1", qty: 1, size: "S" }], { productId: "p1", qty: 1, size: "M" }, p);
+    const r = addToCart(
+      [{ productId: "p1", qty: 1, size: "S" }],
+      { productId: "p1", qty: 1, size: "M" },
+      p,
+    );
     expect(r.ok && r.cart.length).toBe(2);
   });
   it("refuses to exceed stock across variants", () => {
-    const r = addToCart([{ productId: "p1", qty: 4, size: "S" }], { productId: "p1", qty: 2, size: "M" }, p);
+    const r = addToCart(
+      [{ productId: "p1", qty: 4, size: "S" }],
+      { productId: "p1", qty: 2, size: "M" },
+      p,
+    );
     expect(r.ok).toBe(false);
   });
   it("refuses out-of-stock products", () => {
@@ -60,13 +70,22 @@ describe("cart", () => {
 
 describe("delivery and totals", () => {
   it("charges ₹99 standard delivery under ₹1,999", () => {
-    expect(totals([{ price: 999, qty: 1 }])).toMatchObject({ subtotal: 999, delivery: 99, total: 1098 });
+    expect(totals([{ price: 999, qty: 1 }])).toMatchObject({
+      subtotal: 999,
+      delivery: 99,
+      total: 1098,
+    });
   });
   it("standard delivery is free from ₹1,999", () => {
     expect(totals([{ price: 1999, qty: 1 }]).delivery).toBe(0);
   });
   it("express delivery is ₹199", () => {
-    expect(totals([{ price: 2500, qty: 2 }], "express")).toMatchObject({ subtotal: 5000, delivery: 199, total: 5199, items: 2 });
+    expect(totals([{ price: 2500, qty: 2 }], "express")).toMatchObject({
+      subtotal: 5000,
+      delivery: 199,
+      total: 5199,
+      items: 2,
+    });
   });
   it("empty cart totals zero", () => {
     expect(totals([]).total).toBe(0);
@@ -86,8 +105,27 @@ describe("checkout validation", () => {
     expect(isIndianPin("50001")).toBe(false);
   });
   it("flags every missing required field", () => {
-    const e = validateCheckout({ name: "", mobile: "", email: "", house: "", street: "", landmark: "", city: "", state: "", pin: "" });
-    expect(Object.keys(e).sort()).toEqual(["city", "email", "house", "mobile", "name", "pin", "state", "street"]);
+    const e = validateCheckout({
+      name: "",
+      mobile: "",
+      email: "",
+      house: "",
+      street: "",
+      landmark: "",
+      city: "",
+      state: "",
+      pin: "",
+    });
+    expect(Object.keys(e).sort()).toEqual([
+      "city",
+      "email",
+      "house",
+      "mobile",
+      "name",
+      "pin",
+      "state",
+      "street",
+    ]);
   });
 });
 
