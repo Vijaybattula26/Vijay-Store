@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { addToCart, lineKey, setLineQty, type CartLine } from "./commerce";
-import { cartDb, findProduct, productsDb, recentDb, wishlistDb } from "./db";
+import { cartDb, customerDb, findProduct, ordersDb, productsDb, recentDb, wishlistDb } from "./db";
 
 /** Cart / wishlist / recently-viewed hook, persisted to localStorage via db.ts. */
 export function useStore() {
@@ -47,4 +47,13 @@ export function useHydrated() {
     () => true,
     () => false,
   );
+}
+
+/** Orders placed on this device by the saved customer (matched by email or mobile). */
+export function useMyOrders() {
+  const orders = ordersDb.use();
+  const me = customerDb.use();
+  const hydrated = useHydrated();
+  if (!hydrated || !me) return [];
+  return orders.filter((o) => o.customer.email === me.email || o.customer.mobile === me.mobile);
 }

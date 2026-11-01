@@ -80,7 +80,7 @@ function CartPage() {
   );
 }
 
-export function Row({ label, value, bold }: { label: string; value: string; bold?: boolean }) {
+function Row({ label, value, bold }: { label: string; value: string; bold?: boolean }) {
   return (
     <div className={cn("flex justify-between", bold && "text-base font-semibold")}>
       <span>{label}</span>

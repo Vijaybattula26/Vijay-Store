@@ -1,31 +1,15 @@
-import { createFileRoute, Link, Outlet, useMatchRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Package } from "lucide-react";
 import { PageHeader, SiteLayout, EmptyState, btnPrimary } from "@/components/store/SiteLayout";
 import { StatusBadge, fmtDate } from "@/components/store/OrderDetails";
-import { customerDb, useOrders } from "@/lib/db";
 import { formatPrice } from "@/lib/products";
-import { useHydrated } from "@/lib/store";
+import { useHydrated, useMyOrders } from "@/lib/store";
 import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/orders")({
   head: () => seo("My orders", "Your order history at THE VIJAY STORE.", { robots: "noindex" }),
-  component: OrdersLayout,
+  component: OrdersList,
 });
-
-function OrdersLayout() {
-  const matchRoute = useMatchRoute();
-  if (matchRoute({ to: "/orders/$id" })) return <Outlet />;
-  return <OrdersList />;
-}
-
-/** Orders placed on this device by the current customer (matched by email/mobile). */
-export function useMyOrders() {
-  const orders = useOrders();
-  const hydrated = useHydrated();
-  const me = hydrated ? customerDb.get() : null;
-  if (!me) return [];
-  return orders.filter((o) => o.customer.email === me.email || o.customer.mobile === me.mobile);
-}
 
 function OrdersList() {
   const hydrated = useHydrated();

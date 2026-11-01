@@ -5,7 +5,7 @@ import { customerDb, useOrders } from "@/lib/db";
 import { useHydrated } from "@/lib/store";
 import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/orders/$id")({
+export const Route = createFileRoute("/orders_/$id")({
   head: () => seo("Order details", "Details of your order.", { robots: "noindex" }),
   component: OrderPage,
 });

@@ -5,9 +5,8 @@ import { toast } from "sonner";
 import { PageHeader, SiteLayout, btnPrimary, inputCls } from "@/components/store/SiteLayout";
 import { customerDb } from "@/lib/db";
 import { isEmail, isIndianMobile } from "@/lib/commerce";
-import { useHydrated, useStore } from "@/lib/store";
+import { useHydrated, useMyOrders, useStore } from "@/lib/store";
 import { seo } from "@/lib/seo";
-import { useMyOrders } from "./orders";
 
 export const Route = createFileRoute("/account")({
   head: () => seo("My account", "Your profile, orders, wishlist and saved cart.", { robots: "noindex" }),
